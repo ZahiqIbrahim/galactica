@@ -315,6 +315,22 @@ function submitScore() {
     });
 }
 
+// Helper function to draw rounded rectangles
+function drawRoundedRect(x, y, width, height, radius) {
+    ctx.beginPath();
+    ctx.moveTo(x + radius, y);
+    ctx.lineTo(x + width - radius, y);
+    ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+    ctx.lineTo(x + width, y + height - radius);
+    ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+    ctx.lineTo(x + radius, y + height);
+    ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+    ctx.lineTo(x, y + radius);
+    ctx.quadraticCurveTo(x, y, x + radius, y);
+    ctx.closePath();
+    ctx.fill();
+}
+
 function drawGameOver() {
     ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -335,8 +351,9 @@ function drawGameOver() {
         // Reset shadow for button background
         ctx.shadowBlur = 0;
         
+        // Draw rounded button background
         ctx.fillStyle = 'lime';
-        ctx.fillRect(canvas.width / 2 - 100, canvas.height / 2 + 40, 250, 40);
+        drawRoundedRect(canvas.width / 2 - 100, canvas.height / 2 + 40, 250, 40, 10);
         
         // Add glow to button text
         ctx.shadowColor = '#00ff00';
@@ -550,8 +567,14 @@ canvas.addEventListener('touchend', (e) => {
 function handleCanvasClick(e) {
     if (gameIsOver && nameSubmitted) {
         const rect = canvas.getBoundingClientRect();
-        const x = (e.clientX || e.changedTouches[0].clientX) - rect.left;
-        const y = (e.clientY || e.changedTouches[0].clientY) - rect.top;
+        const clickX = (e.clientX || e.changedTouches[0].clientX) - rect.left;
+        const clickY = (e.clientY || e.changedTouches[0].clientY) - rect.top;
+
+        // Scale the click coordinates to match the canvas internal dimensions
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+        const x = clickX * scaleX;
+        const y = clickY * scaleY;
 
         // Check if click/touch is on the "Play Again" button
         if (x >= canvas.width / 2 - 100 && x <= canvas.width / 2 + 150 &&
