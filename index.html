@@ -3,22 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>JavaScript Invaders - A Modern Space Invaders Game</title>
-    <meta name="description" content="Play JavaScript Invaders, a modern remake of the classic Space Invaders arcade game. Defend Earth from pixelated alien invaders in this exciting JavaScript game!">
-    
+    <title>Galactica</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Pixelify+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
     <style>
         html, body { 
             height: 100%;
             margin: 0; 
             padding: 0;
+            overflow-x: hidden;
         }
         body {
             display: flex;
             flex-direction: column;
             font-family: Arial, sans-serif;
-            background-color: black;
+            background-color: #0a0a0a;
             color: white;
+            position: relative;
+        }
+        
+        /* CRT Monitor Effect - Intensified */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(0, 0, 0, 0.3),
+                    rgba(0, 0, 0, 0.3) 1px,
+                    transparent 1px,
+                    transparent 2px
+                );
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 10000;
+            animation: scanline 0.1s linear infinite;
+        }
+        
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.6) 100%),
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(0, 255, 0, 0.08),
+                    transparent 0.5px,
+                    transparent 2px,
+                    rgba(0, 255, 0, 0.08) 2.5px
+                );
+            pointer-events: none;
+            z-index: 10001;
+            animation: flicker 0.1s infinite;
+        }
+        
+        @keyframes scanline {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 0 4px;
+            }
+        }
+        
+        @keyframes flicker {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.95;
+            }
+        }
+        
+        /* CRT Screen Effect */
+        .content {
+            filter: contrast(1.2) brightness(0.9);
+        }
+        
+        /* Phosphor Glow Effect */
+        
+        .game-title {
+            text-shadow: 
+                0 0 3px rgba(0, 255, 0, 0.8),
+                0 0 6px rgba(0, 255, 0, 0.6),
+                0 0 9px rgba(0, 255, 0, 0.4),
+                3px 3px 0px #003300;
+        }
+        
+        /* Leaderboard CRT Effect - Merged with bulging effect above */
+        #leaderboard {
+            position: relative;
+        }
+        
+        #leaderboard::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(0, 255, 0, 0.05),
+                    transparent 1px,
+                    transparent 2px
+                );
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 1;
+            border-radius: 10px;
+            animation: scanlineLeaderboard 0.1s linear infinite;
+        }
+        
+        @keyframes scanlineLeaderboard {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 0 4px;
+            }
+        }
+        
+        #leaderboard h2,
+        #leaderboard p,
+        #leaderboard strong {
+            text-shadow: 
+                0 0 2px rgba(0, 255, 0, 0.6),
+                0 0 4px rgba(0, 255, 0, 0.4);
+            position: relative;
+            z-index: 2;
+        }
+        
+        #leaderboard h2 {
+            text-shadow: 
+                0 0 3px rgba(0, 255, 0, 0.8),
+                0 0 6px rgba(0, 255, 0, 0.6),
+                0 0 9px rgba(0, 255, 0, 0.4);
         }
         .content {
             flex: 1 0 auto;
@@ -88,12 +219,20 @@
             background: #00cc00;
         }
         .game-title {
-            font-family: 'Press Start 2P', cursive;
+            font-family: 'Pixelify Sans', 'VT323', monospace;
             text-align: center;
-            font-size: 36px;
+            font-size: 56px;
             margin: 0 0 20px 0;
             color: #00ff00;
-            text-shadow: 3px 3px #003300;
+            text-shadow: 
+                0 0 3px #00ff00,
+                3px 3px 0px #003300;
+            letter-spacing: 4px;
+            font-weight: 700;
+            text-transform: uppercase;
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
         }
         #gameCanvas { 
             display: block; 
@@ -209,7 +348,8 @@
         }
         @media (max-width: 800px) {
             .game-title {
-                font-size: 24px;
+                font-size: 32px;
+                letter-spacing: 2px;
                 margin-bottom: 10px;
             }
             #gameCanvas {
@@ -251,7 +391,8 @@
                 padding: 10px;
             }
             .game-title {
-                font-size: 18px;
+                font-size: 24px;
+                letter-spacing: 2px;
                 writing-mode: vertical-rl;
                 text-orientation: upright;
                 margin: 0 10px;
@@ -277,7 +418,7 @@
 <body>
     <div class="content">
         <div class="game-container">
-            <h1 class="game-title">JavaScript Invaders</h1>
+            <h1 class="game-title">Galactica</h1>
             <div class="canvas-wrapper">
                 <canvas id="gameCanvas" width="800" height="600"></canvas>
                 <div id="nameForm">
