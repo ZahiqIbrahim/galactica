@@ -4,10 +4,37 @@ export default async function handler(req, res) {
     }
 
     try {
-        const { name, score } = req.body;
+        // Log the entire request for debugging
+        console.log("Request method:", req.method);
+        console.log("Request body type:", typeof req.body);
+        console.log("Request body:", req.body);
+        console.log("Request headers:", req.headers);
+        
+        // Vercel should auto-parse JSON, but handle both cases
+        let body = req.body;
+        
+        // If body is a string, parse it
+        if (typeof body === 'string') {
+            try {
+                body = JSON.parse(body);
+            } catch (e) {
+                console.error("Failed to parse body string:", e);
+                return res.status(400).json({ error: "Invalid JSON in request body" });
+            }
+        }
+        
+        // Extract name and score
+        const name = body?.name;
+        const score = body?.score !== undefined ? Number(body.score) : undefined;
+        
+        console.log("Extracted - name:", name, "score:", score, "type:", typeof score);
 
-        if (!name || !score) {
-            return res.status(400).json({ error: "Name and score are required" });
+        if (!name || name.trim() === '') {
+            return res.status(400).json({ error: "Name is required" });
+        }
+        
+        if (score === undefined || score === null || isNaN(score)) {
+            return res.status(400).json({ error: "Valid score is required" });
         }
 
         const binId = process.env.JSONBIN_BIN_ID || "default-bin-id";
