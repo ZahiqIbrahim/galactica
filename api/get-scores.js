@@ -19,10 +19,15 @@ export default async function handler(req, res) {
                     // Handle both array format and object with scores property
                     const record = data.record;
                     scores = Array.isArray(record) ? record : (record?.scores || []);
+                    console.log(`Loaded ${scores.length} scores from JSONBin`);
+                } else {
+                    console.error("JSONBin fetch failed:", response.status, await response.text());
                 }
             } catch (fetchErr) {
                 console.error("JSONBin fetch error:", fetchErr);
             }
+        } else {
+            console.warn("JSONBin credentials not configured");
         }
         
         // Sort by score descending and limit to top 10

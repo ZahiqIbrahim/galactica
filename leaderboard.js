@@ -36,6 +36,9 @@ async function loadLeaderboard() {
     }
 }
 
+// Make loadLeaderboard available globally so it can be called from space-invaders.js
+window.loadLeaderboard = loadLeaderboard;
+
 // Load leaderboard when page loads
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', loadLeaderboard);

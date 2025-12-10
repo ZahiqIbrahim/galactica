@@ -45,7 +45,7 @@ export default async function handler(req, res) {
         // Save back to JSONBin
         if (apiKey && binId !== "default-bin-id") {
             try {
-                await fetch(`https://api.jsonbin.io/v3/b/${binId}`, {
+                const updateResponse = await fetch(`https://api.jsonbin.io/v3/b/${binId}`, {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
@@ -53,12 +53,24 @@ export default async function handler(req, res) {
                     },
                     body: JSON.stringify(scores)
                 });
+                
+                if (!updateResponse.ok) {
+                    const errorData = await updateResponse.text();
+                    console.error("JSONBin update failed:", updateResponse.status, errorData);
+                    throw new Error(`JSONBin update failed: ${updateResponse.status}`);
+                }
+                
+                console.log("Scores saved to JSONBin successfully");
             } catch (updateErr) {
                 console.error("JSONBin update error:", updateErr);
+                // Still return success if we got the scores, even if save failed
+                // This allows the function to work even if JSONBin is temporarily unavailable
             }
+        } else {
+            console.warn("JSONBin credentials not configured. Score not saved.");
         }
 
-        res.status(200).json({ success: true });
+        res.status(200).json({ success: true, scoresCount: scores.length });
     } catch (err) {
         console.error("POST ERROR:", err);
         res.status(500).json({ error: "server error" });

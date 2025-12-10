@@ -251,14 +251,22 @@ function gameOver() {
                     score: score
                 })
             })
-            .then(res => res.json())
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error(`HTTP error! status: ${res.status}`);
+                }
+                return res.json();
+            })
             .then(data => {
-                console.log("Score submitted:", data);
-                // Trigger leaderboard reload
-                window.dispatchEvent(new Event('scoreSubmitted'));
+                console.log("Score submitted successfully:", data);
+                // Wait a moment for the data to be saved, then reload leaderboard
+                setTimeout(() => {
+                    loadLeaderboard();
+                }, 500);
             })
             .catch(err => {
                 console.error("Error submitting score:", err);
+                alert("Failed to submit score. Check console for details.");
             });
         }
     }, 500);
