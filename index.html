@@ -92,13 +92,11 @@
         
         /* Enhanced Phosphor Glow Effects for All Text */
         
-        /* Global text glow - Brighter + Pixelated */
+        /* Global text glow - Optimized for mobile */
         body, h1, h2, h3, p, strong, button, input, a {
             text-shadow: 
-                0 0 3px rgba(0, 255, 0, 1),
-                0 0 6px rgba(0, 255, 0, 0.8),
-                0 0 9px rgba(0, 255, 0, 0.6),
-                0 0 12px rgba(0, 255, 0, 0.4);
+                0 0 2px rgba(0, 255, 0, 0.8),
+                0 0 4px rgba(0, 255, 0, 0.6);
             /* Pixelated rendering for all text */
             image-rendering: pixelated;
             image-rendering: -moz-crisp-edges;
@@ -106,6 +104,13 @@
             -webkit-font-smoothing: none;
             -moz-osx-font-smoothing: grayscale;
             font-smooth: never;
+        }
+        
+        /* Disable heavy effects on mobile */
+        @media (max-width: 800px) {
+            body, h1, h2, h3, p, strong, button, input, a {
+                text-shadow: 0 0 2px rgba(0, 255, 0, 0.8);
+            }
         }
         
         .game-title {
@@ -134,6 +139,33 @@
                     0 0 24px rgba(0, 255, 0, 0.8),
                     0 0 32px rgba(0, 255, 0, 0.6),
                     3px 3px 0px #003300;
+            }
+        }
+        
+        /* Disable animations on mobile for better performance */
+        @media (max-width: 800px) {
+            .game-title {
+                animation: none;
+                text-shadow: 
+                    0 0 3px rgba(0, 255, 0, 1),
+                    0 0 6px rgba(0, 255, 0, 0.8),
+                    3px 3px 0px #003300;
+            }
+            
+            #leaderboard {
+                animation: none;
+            }
+            
+            #gameCanvas {
+                animation: none;
+            }
+            
+            #leaderboard h2 {
+                animation: none;
+            }
+            
+            #leaderboard strong {
+                animation: none;
             }
         }
         
@@ -194,15 +226,12 @@
             animation: leaderboardTitleGlow 3s ease-in-out infinite alternate;
         }
         
-        /* Enhanced glow for leaderboard names */
+        /* Reduced glow for leaderboard names */
         #leaderboard strong {
             font-size: clamp(12px, 1.5vw, 16px);
             text-shadow: 
-                0 0 6px rgba(0, 255, 0, 1),
-                0 0 12px rgba(0, 255, 0, 1),
-                0 0 18px rgba(0, 255, 0, 0.8),
-                0 0 24px rgba(0, 255, 0, 0.6),
-                0 0 30px rgba(0, 255, 0, 0.4);
+                0 0 3px rgba(0, 255, 0, 0.8),
+                0 0 6px rgba(0, 255, 0, 0.6);
             animation: nameGlow 4s ease-in-out infinite alternate;
         }
         
@@ -228,19 +257,13 @@
         @keyframes nameGlow {
             from {
                 text-shadow: 
-                    0 0 6px rgba(0, 255, 0, 1),
-                    0 0 12px rgba(0, 255, 0, 1),
-                    0 0 18px rgba(0, 255, 0, 0.8),
-                    0 0 24px rgba(0, 255, 0, 0.6),
-                    0 0 30px rgba(0, 255, 0, 0.4);
+                    0 0 3px rgba(0, 255, 0, 0.8),
+                    0 0 6px rgba(0, 255, 0, 0.6);
             }
             to {
                 text-shadow: 
-                    0 0 10px rgba(0, 255, 0, 1),
-                    0 0 20px rgba(0, 255, 0, 1),
-                    0 0 30px rgba(0, 255, 0, 0.9),
-                    0 0 40px rgba(0, 255, 0, 0.7),
-                    0 0 50px rgba(0, 255, 0, 0.5);
+                    0 0 4px rgba(0, 255, 0, 1),
+                    0 0 8px rgba(0, 255, 0, 0.8);
             }
         }
         .content {
@@ -262,7 +285,7 @@
             min-width: 200px;
             max-width: 280px;
             width: 25vw;
-            padding: 15px;
+            padding: 0;
             background: rgba(0, 0, 0, 0.8);
             border: 2px solid #00ff00;
             border-radius: 10px;
@@ -316,7 +339,7 @@
             position: sticky;
             top: 0;
             background: rgba(0, 0, 0, 0.95);
-            padding-bottom: 10px;
+            padding: 15px 10px 10px 10px;
             z-index: 10;
         }
         #leaderboard h2 span {
@@ -325,6 +348,7 @@
         }
         #leaderboard p {
             margin: 8px 0;
+            padding: 0 10px;
             color: white;
         }
         #leaderboard strong {

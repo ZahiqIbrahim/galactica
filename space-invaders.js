@@ -65,8 +65,17 @@ playerImage.src = "player.jpg";
 const enemyImage = new Image();
 enemyImage.src = "enemy.jpg";
 
-// Pixel art crisp rendering
+// Pixel art crisp rendering and mobile optimizations
 ctx.imageSmoothingEnabled = false;
+
+// Mobile performance optimizations
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+if (isMobile) {
+    // Reduce audio volume on mobile to save battery
+    sndBG.volume = 0.2;
+    // Disable some visual effects for better performance
+    canvas.style.filter = 'none';
+}
 
 
 
@@ -103,6 +112,10 @@ let explosions = [];
 let touchLeft = false;
 let touchRight = false;
 
+// Bullet firing cooldown
+let lastBulletTime = 0;
+const bulletCooldown = 200; // 200ms cooldown between bullets
+
 function createEnemies() {
     enemies = [];
     for (let i = 0; i < enemyRows; i++) {
@@ -123,9 +136,11 @@ function drawScore() {
     ctx.fillStyle = 'white';
     ctx.font = '20px "Press Start 2P", "VT323", monospace';
     
-    // Add glow effect to score text
-    ctx.shadowColor = '#00ff00';
-    ctx.shadowBlur = 10;
+    // Reduce glow effects on mobile for better performance
+    if (!isMobile) {
+        ctx.shadowColor = '#00ff00';
+        ctx.shadowBlur = 10;
+    }
     
     ctx.fillText(`Score: ${score}`, 10, 30);
     ctx.fillText(`Level: ${level}`, canvas.width - 100, 30);
@@ -335,9 +350,11 @@ function drawGameOver() {
     ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Add glow effect to game over text
-    ctx.shadowColor = '#00ff00';
-    ctx.shadowBlur = 15;
+    // Reduce glow effects on mobile for better performance
+    if (!isMobile) {
+        ctx.shadowColor = '#00ff00';
+        ctx.shadowBlur = 15;
+    }
     
     ctx.fillStyle = 'white';
     ctx.font = '48px "Press Start 2P", "VT323", monospace';
@@ -402,12 +419,22 @@ function resetGame() {
 }
 
 
-function gameLoop() {
+// Performance optimization variables
+let lastFrameTime = 0;
+const targetFPS = 60;
+const frameInterval = 1000 / targetFPS;
 
+function gameLoop(currentTime = 0) {
+    // Throttle frame rate for better mobile performance
+    if (currentTime - lastFrameTime < frameInterval) {
+        requestAnimationFrame(gameLoop);
+        return;
+    }
+    lastFrameTime = currentTime;
 
     if (sndBG.paused && !gameIsOver) {
-    sndBG.play();
-}
+        sndBG.play();
+    }
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -499,13 +526,18 @@ document.addEventListener('keydown', e => {
     if (e.key === 'ArrowLeft') player.moving.left = true;
     if (e.key === 'ArrowRight') player.moving.right = true;
    if (e.key === ' ') {
-    bullets.push({
-        x: player.x + player.width / 2 - 2.5,
-        y: player.y
-    });
+    const currentTime = Date.now();
+    if (currentTime - lastBulletTime >= bulletCooldown) {
+        bullets.push({
+            x: player.x + player.width / 2 - 2.5,
+            y: player.y
+        });
 
-    sndShoot.currentTime = 0;
-    sndShoot.play();  // 🔊 SHOOT SOUND
+        sndShoot.currentTime = 0;
+        sndShoot.play();  // 🔊 SHOOT SOUND
+        
+        lastBulletTime = currentTime;
+    }
 }
 });
 
@@ -544,10 +576,18 @@ document.getElementById('rightBtn').addEventListener('touchend', (e) => {
 
 document.getElementById('fireBtn').addEventListener('touchstart', (e) => {
     e.preventDefault();
-    bullets.push({
-        x: player.x + player.width / 2 - 2.5,
-        y: player.y
-    });
+    const currentTime = Date.now();
+    if (currentTime - lastBulletTime >= bulletCooldown) {
+        bullets.push({
+            x: player.x + player.width / 2 - 2.5,
+            y: player.y
+        });
+
+        sndShoot.currentTime = 0;
+        sndShoot.play();  // 🔊 SHOOT SOUND
+        
+        lastBulletTime = currentTime;
+    }
 });
 
 // Prevent default touch behavior on the canvas
