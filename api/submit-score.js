@@ -42,7 +42,8 @@ export default async function handler(req, res) {
         
         let scores = [];
         
-        // Get existing scores
+        // Get existing scores and preserve the original format
+        let originalFormat = null; // Track if it was an array or object
         if (apiKey && binId !== "default-bin-id") {
             try {
                 const getResponse = await fetch(`https://api.jsonbin.io/v3/b/${binId}/latest`, {
@@ -53,13 +54,28 @@ export default async function handler(req, res) {
                 
                 if (getResponse.ok) {
                     const data = await getResponse.json();
-                    // Handle both array format and object with scores property
                     const record = data.record;
-                    scores = Array.isArray(record) ? record : (record?.scores || []);
+                    
+                    // Check the format and preserve it
+                    if (Array.isArray(record)) {
+                        scores = record;
+                        originalFormat = 'array';
+                    } else if (record && typeof record === 'object' && record.scores) {
+                        scores = record.scores || [];
+                        originalFormat = 'object';
+                    } else {
+                        scores = [];
+                        originalFormat = 'object'; // Default to object format since that's what the bin was created with
+                    }
+                    
+                    console.log("Loaded scores format:", originalFormat, "count:", scores.length);
                 }
             } catch (fetchErr) {
                 console.error("JSONBin fetch error:", fetchErr);
+                originalFormat = 'object'; // Default to object format
             }
+        } else {
+            originalFormat = 'object'; // Default format
         }
 
         // Add new score
@@ -69,16 +85,26 @@ export default async function handler(req, res) {
         scores.sort((a, b) => b.score - a.score);
         scores = scores.slice(0, 100);
 
+        // Prepare data to save - preserve original format
+        let dataToSave;
+        if (originalFormat === 'array') {
+            dataToSave = scores;
+        } else {
+            // Save as object with scores property
+            dataToSave = { scores: scores };
+        }
+
         // Save back to JSONBin
         if (apiKey && binId !== "default-bin-id") {
             try {
+                console.log("Saving to JSONBin, format:", originalFormat, "data:", JSON.stringify(dataToSave).substring(0, 100));
                 const updateResponse = await fetch(`https://api.jsonbin.io/v3/b/${binId}`, {
                     method: "PUT",
                     headers: {
                         "Content-Type": "application/json",
                         "X-Master-Key": apiKey
                     },
-                    body: JSON.stringify(scores)
+                    body: JSON.stringify(dataToSave)
                 });
                 
                 if (!updateResponse.ok) {

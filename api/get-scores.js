@@ -18,10 +18,17 @@ export default async function handler(req, res) {
                     const data = await response.json();
                     // Handle both array format and object with scores property
                     const record = data.record;
-                    scores = Array.isArray(record) ? record : (record?.scores || []);
+                    if (Array.isArray(record)) {
+                        scores = record;
+                    } else if (record && typeof record === 'object' && record.scores) {
+                        scores = record.scores || [];
+                    } else {
+                        scores = [];
+                    }
                     console.log(`Loaded ${scores.length} scores from JSONBin`);
                 } else {
-                    console.error("JSONBin fetch failed:", response.status, await response.text());
+                    const errorText = await response.text();
+                    console.error("JSONBin fetch failed:", response.status, errorText);
                 }
             } catch (fetchErr) {
                 console.error("JSONBin fetch error:", fetchErr);
