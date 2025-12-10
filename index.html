@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>JavaScript Invaders - A Modern Space Invaders Game</title>
+    <meta name="description" content="Play JavaScript Invaders, a modern remake of the classic Space Invaders arcade game. Defend Earth from pixelated alien invaders in this exciting JavaScript game!">
+    
+
+    <style>
+        html, body { 
+            height: 100%;
+            margin: 0; 
+            padding: 0;
+        }
+        body {
+            display: flex;
+            flex-direction: column;
+            font-family: Arial, sans-serif;
+            background-color: black;
+            color: white;
+        }
+        .content {
+            flex: 1 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-top: 20px;
+        }
+        .game-title {
+            font-family: 'Press Start 2P', cursive;
+            text-align: center;
+            font-size: 36px;
+            margin: 0 0 20px 0;
+            color: #00ff00;
+            text-shadow: 3px 3px #003300;
+        }
+        #gameCanvas { 
+            display: block; 
+            width: 800px;
+            height: 600px;
+            border: 2px solid #00ff00;
+        }
+        footer {
+            flex-shrink: 0;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background-color: #111;
+            width: 100%;
+        }
+        footer a {
+            color: white;
+            margin: 0 10px;
+            font-size: 24px;
+            text-decoration: none;
+        }
+        footer a:hover {
+            color: #00ff00;
+        }
+        #mobileControls {
+            display: none;
+            text-align: center;
+            padding: 20px 0;
+        }
+        .control-btn {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 2px solid #00ff00;
+            border-radius: 50%;
+            margin: 0 10px;
+            font-size: 24px;
+            line-height: 60px;
+            color: #00ff00;
+            user-select: none;
+        }
+        
+        @media (max-width: 800px) {
+            .game-title {
+                font-size: 24px;
+                margin-bottom: 10px;
+            }
+            #gameCanvas {
+                width: 100%;
+                height: auto;
+                max-width: 400px;
+                max-height: 300px;
+            }
+            #mobileControls {
+                display: block;
+            }
+            .content {
+                padding-top: 10px;
+            }
+            footer {
+                padding: 10px;
+            }
+            footer a {
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 800px) and (orientation: landscape) {
+            body {
+                flex-direction: row;
+            }
+            .content {
+                flex-direction: row;
+                justify-content: space-around;
+                align-items: center;
+                width: 100%;
+                padding: 10px;
+            }
+            .game-title {
+                font-size: 18px;
+                writing-mode: vertical-rl;
+                text-orientation: upright;
+                margin: 0 10px;
+            }
+            #gameCanvas {
+                max-width: 60%;
+                max-height: 90vh;
+            }
+            #mobileControls {
+                display: flex;
+                flex-direction: column;
+                padding: 0 10px;
+            }
+            .control-btn {
+                margin: 5px 0;
+            }
+            footer {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h1 class="game-title">JavaScript Invaders</h1>
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        <div id="mobileControls">
+            <div id="leftBtn" class="control-btn">&lt;</div>
+            <div id="fireBtn" class="control-btn">Fire</div>
+            <div id="rightBtn" class="control-btn">&gt;</div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>By Shane Larson</p>
+      
+    </footer>
+
+    <script src="space-invaders.js"></script>
+
+
+    <div id="leaderboard" style="color:white; margin:20px;"></div>
+
+<script src="leaderboard.js"></script>
+
+</body>
+</html>
