@@ -23,10 +23,58 @@
         .content {
             flex: 1 0 auto;
             display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 20px;
+            gap: 30px;
+        }
+        .game-container {
+            display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
-            padding-top: 20px;
+        }
+        #leaderboard {
+            min-width: 250px;
+            max-width: 300px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #00ff00;
+            border-radius: 10px;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 12px;
+            line-height: 1.8;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        #leaderboard h2 {
+            color: #00ff00;
+            font-size: 18px;
+            margin: 0 0 15px 0;
+            text-align: center;
+            text-shadow: 2px 2px #003300;
+        }
+        #leaderboard p {
+            margin: 8px 0;
+            color: white;
+        }
+        #leaderboard strong {
+            color: #00ff00;
+        }
+        /* Custom scrollbar for leaderboard */
+        #leaderboard::-webkit-scrollbar {
+            width: 8px;
+        }
+        #leaderboard::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 4px;
+        }
+        #leaderboard::-webkit-scrollbar-thumb {
+            background: #00ff00;
+            border-radius: 4px;
+        }
+        #leaderboard::-webkit-scrollbar-thumb:hover {
+            background: #00cc00;
         }
         .game-title {
             font-family: 'Press Start 2P', cursive;
@@ -137,6 +185,17 @@
             user-select: none;
         }
         
+        @media (max-width: 1200px) {
+            .content {
+                flex-direction: column;
+                align-items: center;
+            }
+            #leaderboard {
+                max-width: 800px;
+                width: 100%;
+                margin-top: 20px;
+            }
+        }
         @media (max-width: 800px) {
             .game-title {
                 font-size: 24px;
@@ -152,7 +211,14 @@
                 display: block;
             }
             .content {
-                padding-top: 10px;
+                padding: 10px;
+            }
+            #leaderboard {
+                font-size: 10px;
+                padding: 15px;
+            }
+            #leaderboard h2 {
+                font-size: 14px;
             }
             footer {
                 padding: 10px;
@@ -199,29 +265,31 @@
 </head>
 <body>
     <div class="content">
-        <h1 class="game-title">JavaScript Invaders</h1>
-        <div class="canvas-wrapper">
-            <canvas id="gameCanvas" width="800" height="600"></canvas>
-            <div id="nameForm">
-                <h3>Enter Your Name</h3>
-                <input type="text" id="playerNameInput" placeholder="Your Name" maxlength="20" autocomplete="off">
-                <br>
-                <button id="submitNameBtn">Submit Score</button>
+        <div class="game-container">
+            <h1 class="game-title">JavaScript Invaders</h1>
+            <div class="canvas-wrapper">
+                <canvas id="gameCanvas" width="800" height="600"></canvas>
+                <div id="nameForm">
+                    <h3>Enter Your Name</h3>
+                    <input type="text" id="playerNameInput" placeholder="Your Name" maxlength="20" autocomplete="off">
+                    <br>
+                    <button id="submitNameBtn">Submit Score</button>
+                </div>
+            </div>
+            <div id="mobileControls">
+                <div id="leftBtn" class="control-btn">&lt;</div>
+                <div id="fireBtn" class="control-btn">Fire</div>
+                <div id="rightBtn" class="control-btn">&gt;</div>
             </div>
         </div>
-        <div id="mobileControls">
-            <div id="leftBtn" class="control-btn">&lt;</div>
-            <div id="fireBtn" class="control-btn">Fire</div>
-            <div id="rightBtn" class="control-btn">&gt;</div>
-        </div>
+        
+        <div id="leaderboard"></div>
     </div>
     
     <footer>
         <p>By Shane Larson</p>
       
     </footer>
-
-    <div id="leaderboard" style="color:white; margin:20px;"></div>
 
     <script src="leaderboard.js"></script>
     <script src="space-invaders.js"></script>
