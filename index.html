@@ -42,18 +42,28 @@
             border: 2px solid #00ff00;
             border-radius: 10px;
             font-family: 'Press Start 2P', cursive;
-            font-size: 12px;
-            line-height: 1.8;
-            max-height: 600px;
+            font-size: 11px;
+            line-height: 1.6;
+            height: 600px; /* Match canvas height */
             overflow-y: auto;
+            overflow-x: hidden;
             margin-top: 56px; /* Match title height (36px) + margin-bottom (20px) to align with canvas */
         }
         #leaderboard h2 {
             color: #00ff00;
-            font-size: 18px;
+            font-size: 16px;
             margin: 0 0 15px 0;
             text-align: center;
             text-shadow: 2px 2px #003300;
+            position: sticky;
+            top: 0;
+            background: rgba(0, 0, 0, 0.95);
+            padding-bottom: 10px;
+            z-index: 10;
+        }
+        #leaderboard h2 span {
+            display: block;
+            margin-top: 5px;
         }
         #leaderboard p {
             margin: 8px 0;
@@ -288,7 +298,7 @@
     </div>
     
     <footer>
-        <p>By Shane Larson</p>
+        <p>By Knight Legion</p>
       
     </footer>
 

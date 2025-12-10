@@ -16,11 +16,11 @@ async function loadLeaderboard() {
         }
         
         if (!scores || scores.length === 0) {
-            lbDiv.innerHTML = "<h2>Top Players</h2><p>No scores yet. Be the first!</p>";
+            lbDiv.innerHTML = "<h2>Leaderboard</h2><p>No scores yet. Be the first!</p>";
             return;
         }
         
-        lbDiv.innerHTML = "<h2>Top Players</h2>";
+        lbDiv.innerHTML = `<h2>Leaderboard<br><span style="font-size: 10px;">Top ${scores.length}</span></h2>`;
 
         scores.forEach((entry, index) => {
             lbDiv.innerHTML += `
@@ -31,7 +31,7 @@ async function loadLeaderboard() {
         console.error("Error loading leaderboard:", err);
         const lbDiv = document.getElementById("leaderboard");
         if (lbDiv) {
-            lbDiv.innerHTML = "<h2>Top Players</h2><p>Unable to load leaderboard.</p>";
+            lbDiv.innerHTML = "<h2>Leaderboard</h2><p>Unable to load leaderboard.</p>";
         }
     }
 }

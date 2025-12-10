@@ -37,9 +37,9 @@ export default async function handler(req, res) {
             console.warn("JSONBin credentials not configured");
         }
         
-        // Sort by score descending and limit to top 10
+        // Sort by score descending and limit to top 500
         scores.sort((a, b) => b.score - a.score);
-        scores = scores.slice(0, 10);
+        scores = scores.slice(0, 500);
 
         res.status(200).json(scores);
     } catch (err) {
