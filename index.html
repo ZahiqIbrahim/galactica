@@ -42,6 +42,65 @@
             height: 600px;
             border: 2px solid #00ff00;
         }
+        #nameForm {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 30px;
+            border: 3px solid #00ff00;
+            border-radius: 10px;
+        }
+        #nameForm.show {
+            display: block;
+        }
+        #nameForm h3 {
+            font-family: 'Press Start 2P', cursive;
+            color: #00ff00;
+            font-size: 18px;
+            margin: 0 0 20px 0;
+        }
+        #nameForm input {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 16px;
+            padding: 10px;
+            width: 300px;
+            background: black;
+            color: #00ff00;
+            border: 2px solid #00ff00;
+            outline: none;
+            text-align: center;
+        }
+        #nameForm input:focus {
+            border-color: #00ff00;
+            box-shadow: 0 0 10px #00ff00;
+        }
+        #nameForm button {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 14px;
+            padding: 10px 20px;
+            margin-top: 15px;
+            background: #00ff00;
+            color: black;
+            border: 2px solid #00ff00;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        #nameForm button:hover {
+            background: #00cc00;
+            box-shadow: 0 0 15px #00ff00;
+        }
+        #nameForm button:active {
+            transform: scale(0.95);
+        }
+        .canvas-wrapper {
+            position: relative;
+            display: inline-block;
+        }
         footer {
             flex-shrink: 0;
             font-family: Arial, sans-serif;
@@ -141,7 +200,15 @@
 <body>
     <div class="content">
         <h1 class="game-title">JavaScript Invaders</h1>
-        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        <div class="canvas-wrapper">
+            <canvas id="gameCanvas" width="800" height="600"></canvas>
+            <div id="nameForm">
+                <h3>Enter Your Name</h3>
+                <input type="text" id="playerNameInput" placeholder="Your Name" maxlength="20" autocomplete="off">
+                <br>
+                <button id="submitNameBtn">Submit Score</button>
+            </div>
+        </div>
         <div id="mobileControls">
             <div id="leftBtn" class="control-btn">&lt;</div>
             <div id="fireBtn" class="control-btn">Fire</div>

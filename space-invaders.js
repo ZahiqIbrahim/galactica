@@ -231,46 +231,80 @@ function checkCollisions() {
     });
 }
 
+let nameSubmitted = false;
+
 function gameOver() {
     gameIsOver = true;
+    nameSubmitted = false;
 
     sndBG.pause();  // stop background music
 
     sndGameOver.currentTime = 0;
     sndGameOver.play(); // 🔊 GAME OVER
 
+    // Show name input form after a short delay
     setTimeout(() => {
-        const playerName = prompt("Enter your name for leaderboard:");
-
-        if (playerName) {
-            fetch("/api/submit-score", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    name: playerName,
-                    score: score
-                })
-            })
-            .then(res => {
-                if (!res.ok) {
-                    throw new Error(`HTTP error! status: ${res.status}`);
-                }
-                return res.json();
-            })
-            .then(data => {
-                console.log("Score submitted successfully:", data);
-                // Wait a moment for the data to be saved, then reload leaderboard
-                setTimeout(() => {
-                    loadLeaderboard();
-                }, 500);
-            })
-            .catch(err => {
-                console.error("Error submitting score:", err);
-                alert("Failed to submit score. Check console for details.");
-            });
+        const nameForm = document.getElementById("nameForm");
+        const nameInput = document.getElementById("playerNameInput");
+        if (nameForm && nameInput) {
+            nameForm.classList.add("show");
+            nameInput.value = "";
+            nameInput.focus();
         }
     }, 500);
+}
 
+function submitScore() {
+    const nameInput = document.getElementById("playerNameInput");
+    const nameForm = document.getElementById("nameForm");
+    const playerName = nameInput?.value?.trim();
+
+    if (!playerName) {
+        alert("Please enter your name!");
+        return;
+    }
+
+    if (nameSubmitted) {
+        return; // Prevent double submission
+    }
+
+    nameSubmitted = true;
+    
+    // Hide the form
+    if (nameForm) {
+        nameForm.classList.remove("show");
+    }
+
+    // Submit score
+    fetch("/api/submit-score", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            name: playerName,
+            score: score
+        })
+    })
+    .then(res => {
+        if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        return res.json();
+    })
+    .then(data => {
+        console.log("Score submitted successfully:", data);
+        // Wait a moment for the data to be saved, then reload leaderboard
+        setTimeout(() => {
+            loadLeaderboard();
+        }, 500);
+    })
+    .catch(err => {
+        console.error("Error submitting score:", err);
+        alert("Failed to submit score. Check console for details.");
+        nameSubmitted = false; // Allow retry on error
+        if (nameForm) {
+            nameForm.classList.add("show");
+        }
+    });
 }
 
 function drawGameOver() {
@@ -279,16 +313,19 @@ function drawGameOver() {
 
     ctx.fillStyle = 'white';
     ctx.font = '48px "Press Start 2P"';
-    ctx.fillText('Game Over', canvas.width / 2 - 180, canvas.height / 2 - 50);
+    ctx.fillText('Game Over', canvas.width / 2 - 180, canvas.height / 2 - 100);
 
     ctx.font = '24px "Press Start 2P"';
-    ctx.fillText(`Final Score: ${score}`, canvas.width / 2 - 150, canvas.height / 2 + 10);
+    ctx.fillText(`Final Score: ${score}`, canvas.width / 2 - 150, canvas.height / 2 - 50);
 
-    ctx.fillStyle = 'lime';
-    ctx.fillRect(canvas.width / 2 - 100, canvas.height / 2 + 40, 250, 40);
-    ctx.fillStyle = 'black';
-    ctx.font = '20px "Press Start 2P"';
-    ctx.fillText('Play Again', canvas.width / 2 - 70, canvas.height / 2 + 65);
+    // Only show "Play Again" button after name is submitted
+    if (nameSubmitted) {
+        ctx.fillStyle = 'lime';
+        ctx.fillRect(canvas.width / 2 - 100, canvas.height / 2 + 40, 250, 40);
+        ctx.fillStyle = 'black';
+        ctx.font = '20px "Press Start 2P"';
+        ctx.fillText('Play Again', canvas.width / 2 - 70, canvas.height / 2 + 65);
+    }
 }
 
 function nextLevel() {
@@ -311,14 +348,17 @@ function resetGame() {
     enemyBullets = [];
     explosions = [];
     gameIsOver = false;
+    nameSubmitted = false;
+
+    // Hide name form if visible
+    const nameForm = document.getElementById("nameForm");
+    if (nameForm) {
+        nameForm.classList.remove("show");
+    }
 
     sndBG.currentTime = 0;
     sndBG.play();
     sndBG.isPlaying = true;
-
-
-
-
 }
 
 
@@ -485,17 +525,42 @@ canvas.addEventListener('touchend', (e) => {
 
 // Handle canvas click/touch for the "Play Again" button
 function handleCanvasClick(e) {
-    if (gameIsOver) {
+    if (gameIsOver && nameSubmitted) {
         const rect = canvas.getBoundingClientRect();
         const x = (e.clientX || e.changedTouches[0].clientX) - rect.left;
         const y = (e.clientY || e.changedTouches[0].clientY) - rect.top;
 
         // Check if click/touch is on the "Play Again" button
-        if (x >= canvas.width / 2 - 60 && x <= canvas.width / 2 + 60 &&
+        if (x >= canvas.width / 2 - 100 && x <= canvas.width / 2 + 150 &&
             y >= canvas.height / 2 + 40 && y <= canvas.height / 2 + 80) {
             resetGame();
         }
     }
+}
+
+// Set up form submission handlers (run after DOM is ready)
+function setupNameForm() {
+    const submitBtn = document.getElementById("submitNameBtn");
+    const nameInput = document.getElementById("playerNameInput");
+
+    if (submitBtn) {
+        submitBtn.addEventListener('click', submitScore);
+    }
+
+    if (nameInput) {
+        nameInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                submitScore();
+            }
+        });
+    }
+}
+
+// Set up handlers when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupNameForm);
+} else {
+    setupNameForm();
 }
 
 canvas.addEventListener('click', handleCanvasClick);
