@@ -121,10 +121,18 @@ createEnemies();
 
 function drawScore() {
     ctx.fillStyle = 'white';
-    ctx.font = '20px Arial';
+    ctx.font = '20px "Press Start 2P", "VT323", monospace';
+    
+    // Add glow effect to score text
+    ctx.shadowColor = '#00ff00';
+    ctx.shadowBlur = 10;
+    
     ctx.fillText(`Score: ${score}`, 10, 30);
     ctx.fillText(`Level: ${level}`, canvas.width - 100, 30);
     ctx.fillText(`Lives: ${player.lives}`, 10, canvas.height - 10);
+    
+    // Reset shadow
+    ctx.shadowBlur = 0;
 }
 
 function enemyShoot() {
@@ -311,21 +319,36 @@ function drawGameOver() {
     ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+    // Add glow effect to game over text
+    ctx.shadowColor = '#00ff00';
+    ctx.shadowBlur = 15;
+    
     ctx.fillStyle = 'white';
-    ctx.font = '48px "Press Start 2P"';
+    ctx.font = '48px "Press Start 2P", "VT323", monospace';
     ctx.fillText('Game Over', canvas.width / 2 - 180, canvas.height / 2 - 100);
 
-    ctx.font = '24px "Press Start 2P"';
+    ctx.font = '24px "Press Start 2P", "VT323", monospace';
     ctx.fillText(`Final Score: ${score}`, canvas.width / 2 - 150, canvas.height / 2 - 50);
 
     // Only show "Play Again" button after name is submitted
     if (nameSubmitted) {
+        // Reset shadow for button background
+        ctx.shadowBlur = 0;
+        
         ctx.fillStyle = 'lime';
         ctx.fillRect(canvas.width / 2 - 100, canvas.height / 2 + 40, 250, 40);
+        
+        // Add glow to button text
+        ctx.shadowColor = '#00ff00';
+        ctx.shadowBlur = 10;
+        
         ctx.fillStyle = 'black';
-        ctx.font = '20px "Press Start 2P"';
+        ctx.font = '20px "Press Start 2P", "VT323", monospace';
         ctx.fillText('Play Again', canvas.width / 2 - 70, canvas.height / 2 + 65);
     }
+    
+    // Reset shadow
+    ctx.shadowBlur = 0;
 }
 
 function nextLevel() {

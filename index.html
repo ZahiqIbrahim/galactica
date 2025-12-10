@@ -10,10 +10,10 @@
 
     <style>
         html, body { 
-            height: 100%;
+            height: 100vh;
             margin: 0; 
             padding: 0;
-            overflow-x: hidden;
+            overflow: hidden;
         }
         body {
             display: flex;
@@ -24,7 +24,7 @@
             position: relative;
         }
         
-        /* CRT Monitor Effect - Intensified */
+        /* CRT Monitor Effect - Subtle */
         body::before {
             content: '';
             position: fixed;
@@ -35,15 +35,15 @@
             background: 
                 repeating-linear-gradient(
                     0deg,
-                    rgba(0, 0, 0, 0.3),
-                    rgba(0, 0, 0, 0.3) 1px,
+                    rgba(0, 0, 0, 0.1),
+                    rgba(0, 0, 0, 0.1) 1px,
                     transparent 1px,
                     transparent 2px
                 );
             background-size: 100% 4px;
             pointer-events: none;
             z-index: 10000;
-            animation: scanline 0.1s linear infinite;
+            animation: scanline 0.2s linear infinite;
         }
         
         body::after {
@@ -54,17 +54,17 @@
             width: 100%;
             height: 100%;
             background: 
-                radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.6) 100%),
+                radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.2) 100%),
                 repeating-linear-gradient(
                     0deg,
-                    rgba(0, 255, 0, 0.08),
+                    rgba(0, 255, 0, 0.03),
                     transparent 0.5px,
                     transparent 2px,
-                    rgba(0, 255, 0, 0.08) 2.5px
+                    rgba(0, 255, 0, 0.03) 2.5px
                 );
             pointer-events: none;
             z-index: 10001;
-            animation: flicker 0.1s infinite;
+            animation: flicker 0.2s infinite;
         }
         
         @keyframes scanline {
@@ -81,7 +81,7 @@
                 opacity: 1;
             }
             50% {
-                opacity: 0.95;
+                opacity: 0.98;
             }
         }
         
@@ -90,14 +90,51 @@
             filter: contrast(1.2) brightness(0.9);
         }
         
-        /* Phosphor Glow Effect */
+        /* Enhanced Phosphor Glow Effects for All Text */
+        
+        /* Global text glow - Brighter + Pixelated */
+        body, h1, h2, h3, p, strong, button, input, a {
+            text-shadow: 
+                0 0 3px rgba(0, 255, 0, 1),
+                0 0 6px rgba(0, 255, 0, 0.8),
+                0 0 9px rgba(0, 255, 0, 0.6),
+                0 0 12px rgba(0, 255, 0, 0.4);
+            /* Pixelated rendering for all text */
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+            -webkit-font-smoothing: none;
+            -moz-osx-font-smoothing: grayscale;
+            font-smooth: never;
+        }
         
         .game-title {
             text-shadow: 
-                0 0 3px rgba(0, 255, 0, 0.8),
-                0 0 6px rgba(0, 255, 0, 0.6),
-                0 0 9px rgba(0, 255, 0, 0.4),
+                0 0 5px rgba(0, 255, 0, 1),
+                0 0 10px rgba(0, 255, 0, 0.8),
+                0 0 15px rgba(0, 255, 0, 0.6),
+                0 0 20px rgba(0, 255, 0, 0.4),
                 3px 3px 0px #003300;
+            animation: titleGlow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes titleGlow {
+            from {
+                text-shadow: 
+                    0 0 5px rgba(0, 255, 0, 1),
+                    0 0 10px rgba(0, 255, 0, 0.8),
+                    0 0 15px rgba(0, 255, 0, 0.6),
+                    0 0 20px rgba(0, 255, 0, 0.4),
+                    3px 3px 0px #003300;
+            }
+            to {
+                text-shadow: 
+                    0 0 8px rgba(0, 255, 0, 1),
+                    0 0 16px rgba(0, 255, 0, 1),
+                    0 0 24px rgba(0, 255, 0, 0.8),
+                    0 0 32px rgba(0, 255, 0, 0.6),
+                    3px 3px 0px #003300;
+            }
         }
         
         /* Leaderboard CRT Effect - Merged with bulging effect above */
@@ -115,7 +152,7 @@
             background: 
                 repeating-linear-gradient(
                     0deg,
-                    rgba(0, 255, 0, 0.05),
+                    rgba(0, 255, 0, 0.02),
                     transparent 1px,
                     transparent 2px
                 );
@@ -123,7 +160,7 @@
             pointer-events: none;
             z-index: 1;
             border-radius: 10px;
-            animation: scanlineLeaderboard 0.1s linear infinite;
+            animation: scanlineLeaderboard 0.2s linear infinite;
         }
         
         @keyframes scanlineLeaderboard {
@@ -139,26 +176,81 @@
         #leaderboard p,
         #leaderboard strong {
             text-shadow: 
-                0 0 2px rgba(0, 255, 0, 0.6),
-                0 0 4px rgba(0, 255, 0, 0.4);
+                0 0 5px rgba(0, 255, 0, 1),
+                0 0 10px rgba(0, 255, 0, 0.8),
+                0 0 15px rgba(0, 255, 0, 0.6),
+                0 0 20px rgba(0, 255, 0, 0.4);
             position: relative;
             z-index: 2;
         }
         
         #leaderboard h2 {
             text-shadow: 
-                0 0 3px rgba(0, 255, 0, 0.8),
-                0 0 6px rgba(0, 255, 0, 0.6),
-                0 0 9px rgba(0, 255, 0, 0.4);
+                0 0 8px rgba(0, 255, 0, 1),
+                0 0 16px rgba(0, 255, 0, 1),
+                0 0 24px rgba(0, 255, 0, 0.8),
+                0 0 32px rgba(0, 255, 0, 0.6),
+                0 0 40px rgba(0, 255, 0, 0.4);
+            animation: leaderboardTitleGlow 3s ease-in-out infinite alternate;
+        }
+        
+        /* Enhanced glow for leaderboard names */
+        #leaderboard strong {
+            text-shadow: 
+                0 0 6px rgba(0, 255, 0, 1),
+                0 0 12px rgba(0, 255, 0, 1),
+                0 0 18px rgba(0, 255, 0, 0.8),
+                0 0 24px rgba(0, 255, 0, 0.6),
+                0 0 30px rgba(0, 255, 0, 0.4);
+            animation: nameGlow 4s ease-in-out infinite alternate;
+        }
+        
+        @keyframes leaderboardTitleGlow {
+            from {
+                text-shadow: 
+                    0 0 8px rgba(0, 255, 0, 1),
+                    0 0 16px rgba(0, 255, 0, 1),
+                    0 0 24px rgba(0, 255, 0, 0.8),
+                    0 0 32px rgba(0, 255, 0, 0.6),
+                    0 0 40px rgba(0, 255, 0, 0.4);
+            }
+            to {
+                text-shadow: 
+                    0 0 12px rgba(0, 255, 0, 1),
+                    0 0 24px rgba(0, 255, 0, 1),
+                    0 0 36px rgba(0, 255, 0, 0.9),
+                    0 0 48px rgba(0, 255, 0, 0.7),
+                    0 0 60px rgba(0, 255, 0, 0.5);
+            }
+        }
+        
+        @keyframes nameGlow {
+            from {
+                text-shadow: 
+                    0 0 6px rgba(0, 255, 0, 1),
+                    0 0 12px rgba(0, 255, 0, 1),
+                    0 0 18px rgba(0, 255, 0, 0.8),
+                    0 0 24px rgba(0, 255, 0, 0.6),
+                    0 0 30px rgba(0, 255, 0, 0.4);
+            }
+            to {
+                text-shadow: 
+                    0 0 10px rgba(0, 255, 0, 1),
+                    0 0 20px rgba(0, 255, 0, 1),
+                    0 0 30px rgba(0, 255, 0, 0.9),
+                    0 0 40px rgba(0, 255, 0, 0.7),
+                    0 0 50px rgba(0, 255, 0, 0.5);
+            }
         }
         .content {
-            flex: 1 0 auto;
+            flex: 1;
             display: flex;
             flex-direction: row;
-            align-items: flex-start;
+            align-items: center;
             justify-content: center;
-            padding: 20px;
-            gap: 30px;
+            padding: 10px;
+            gap: 20px;
+            min-height: 0;
         }
         .game-container {
             display: flex;
@@ -166,19 +258,53 @@
             align-items: center;
         }
         #leaderboard {
-            min-width: 250px;
-            max-width: 300px;
-            padding: 20px;
+            min-width: 200px;
+            max-width: 280px;
+            width: 25vw;
+            padding: 15px;
             background: rgba(0, 0, 0, 0.8);
             border: 2px solid #00ff00;
             border-radius: 10px;
-            font-family: 'Press Start 2P', cursive;
-            font-size: 11px;
+            font-family: "Press Start 2P", "VT323", monospace;
+            font-size: clamp(8px, 1vw, 11px);
             line-height: 1.6;
-            height: 600px; /* Match canvas height */
+            height: min(52.5vw, calc(100vh - 200px));
+            max-height: 600px;
             overflow-y: auto;
             overflow-x: hidden;
-            margin-top: 56px; /* Match title height (36px) + margin-bottom (20px) to align with canvas */
+            box-shadow: 
+                0 0 15px rgba(0, 255, 0, 1),
+                0 0 30px rgba(0, 255, 0, 0.8),
+                0 0 45px rgba(0, 255, 0, 0.6),
+                0 0 60px rgba(0, 255, 0, 0.4),
+                inset 0 0 15px rgba(0, 255, 0, 0.2);
+            animation: leaderboardGlow 4s ease-in-out infinite alternate;
+            /* Pixelated rendering for leaderboard */
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+            -webkit-font-smoothing: none;
+            -moz-osx-font-smoothing: grayscale;
+            font-smooth: never;
+        }
+        
+        @keyframes leaderboardGlow {
+            from {
+                box-shadow: 
+                    0 0 15px rgba(0, 255, 0, 1),
+                    0 0 30px rgba(0, 255, 0, 0.8),
+                    0 0 45px rgba(0, 255, 0, 0.6),
+                    0 0 60px rgba(0, 255, 0, 0.4),
+                    inset 0 0 15px rgba(0, 255, 0, 0.2);
+            }
+            to {
+                box-shadow: 
+                    0 0 25px rgba(0, 255, 0, 1),
+                    0 0 50px rgba(0, 255, 0, 1),
+                    0 0 75px rgba(0, 255, 0, 0.8),
+                    0 0 100px rgba(0, 255, 0, 0.6),
+                    inset 0 0 25px rgba(0, 255, 0, 0.3);
+            }
         }
         #leaderboard h2 {
             color: #00ff00;
@@ -221,13 +347,16 @@
         .game-title {
             font-family: 'Pixelify Sans', 'VT323', monospace;
             text-align: center;
-            font-size: 56px;
-            margin: 0 0 20px 0;
-            color: #00ff00;
+            font-size: clamp(32px, 5vw, 48px);
+            margin: 0 0 10px 0;
+            color: white;
             text-shadow: 
-                0 0 3px #00ff00,
+                0 0 5px rgba(0, 255, 0, 1),
+                0 0 10px rgba(0, 255, 0, 0.8),
+                0 0 15px rgba(0, 255, 0, 0.6),
+                0 0 20px rgba(0, 255, 0, 0.4),
                 3px 3px 0px #003300;
-            letter-spacing: 4px;
+            letter-spacing: 2px;
             font-weight: 700;
             text-transform: uppercase;
             image-rendering: pixelated;
@@ -236,9 +365,37 @@
         }
         #gameCanvas { 
             display: block; 
-            width: 800px;
-            height: 600px;
+            width: min(70vw, 800px);
+            height: min(52.5vw, 600px);
+            max-height: calc(100vh - 200px);
             border: 2px solid #00ff00;
+            border-radius: 10px;
+            box-shadow: 
+                0 0 15px rgba(0, 255, 0, 1),
+                0 0 30px rgba(0, 255, 0, 0.8),
+                0 0 45px rgba(0, 255, 0, 0.6),
+                0 0 60px rgba(0, 255, 0, 0.4),
+                inset 0 0 15px rgba(0, 255, 0, 0.3);
+            animation: canvasGlow 3s ease-in-out infinite alternate;
+        }
+        
+        @keyframes canvasGlow {
+            from {
+                box-shadow: 
+                    0 0 15px rgba(0, 255, 0, 1),
+                    0 0 30px rgba(0, 255, 0, 0.8),
+                    0 0 45px rgba(0, 255, 0, 0.6),
+                    0 0 60px rgba(0, 255, 0, 0.4),
+                    inset 0 0 15px rgba(0, 255, 0, 0.3);
+            }
+            to {
+                box-shadow: 
+                    0 0 25px rgba(0, 255, 0, 1),
+                    0 0 50px rgba(0, 255, 0, 1),
+                    0 0 75px rgba(0, 255, 0, 0.8),
+                    0 0 100px rgba(0, 255, 0, 0.6),
+                    inset 0 0 25px rgba(0, 255, 0, 0.4);
+            }
         }
         #nameForm {
             display: none;
@@ -252,45 +409,95 @@
             padding: 30px;
             border: 3px solid #00ff00;
             border-radius: 10px;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 0, 1),
+                0 0 40px rgba(0, 255, 0, 0.8),
+                0 0 60px rgba(0, 255, 0, 0.6),
+                0 0 80px rgba(0, 255, 0, 0.4);
         }
         #nameForm.show {
             display: block;
         }
         #nameForm h3 {
-            font-family: 'Press Start 2P', cursive;
+            font-family: "Press Start 2P", "VT323", monospace;
             color: #00ff00;
             font-size: 18px;
             margin: 0 0 20px 0;
+            text-shadow: 
+                0 0 8px rgba(0, 255, 0, 1),
+                0 0 16px rgba(0, 255, 0, 1),
+                0 0 24px rgba(0, 255, 0, 0.8),
+                0 0 32px rgba(0, 255, 0, 0.6);
+            /* Pixelated rendering for form title */
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+            -webkit-font-smoothing: none;
+            -moz-osx-font-smoothing: grayscale;
+            font-smooth: never;
         }
         #nameForm input {
-            font-family: 'Press Start 2P', cursive;
+            font-family: "Press Start 2P", "VT323", monospace;
             font-size: 16px;
             padding: 10px;
             width: 300px;
             background: black;
             color: #00ff00;
             border: 2px solid #00ff00;
+            border-radius: 10px;
             outline: none;
             text-align: center;
+            box-shadow: 
+                0 0 10px rgba(0, 255, 0, 0.8),
+                0 0 20px rgba(0, 255, 0, 0.6),
+                inset 0 0 10px rgba(0, 255, 0, 0.3);
+            /* Pixelated rendering for input */
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+            -webkit-font-smoothing: none;
+            -moz-osx-font-smoothing: grayscale;
+            font-smooth: never;
         }
         #nameForm input:focus {
             border-color: #00ff00;
-            box-shadow: 0 0 10px #00ff00;
+            box-shadow: 
+                0 0 20px rgba(0, 255, 0, 1),
+                0 0 40px rgba(0, 255, 0, 0.8),
+                0 0 60px rgba(0, 255, 0, 0.6),
+                inset 0 0 20px rgba(0, 255, 0, 0.4);
         }
         #nameForm button {
-            font-family: 'Press Start 2P', cursive;
+            font-family: "Press Start 2P", "VT323", monospace;
             font-size: 14px;
             padding: 10px 20px;
             margin-top: 15px;
             background: #00ff00;
             color: black;
             border: 2px solid #00ff00;
+            border-radius: 10px;
             cursor: pointer;
             transition: all 0.2s;
+            box-shadow: 
+                0 0 15px rgba(0, 255, 0, 0.8),
+                0 0 30px rgba(0, 255, 0, 0.6),
+                0 0 45px rgba(0, 255, 0, 0.4);
+            text-shadow: none; /* Override global text shadow for button */
+            /* Pixelated rendering for button */
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+            -webkit-font-smoothing: none;
+            -moz-osx-font-smoothing: grayscale;
+            font-smooth: never;
         }
         #nameForm button:hover {
             background: #00cc00;
-            box-shadow: 0 0 15px #00ff00;
+            box-shadow: 
+                0 0 25px rgba(0, 255, 0, 1),
+                0 0 50px rgba(0, 255, 0, 0.8),
+                0 0 75px rgba(0, 255, 0, 0.6),
+                0 0 100px rgba(0, 255, 0, 0.4);
         }
         #nameForm button:active {
             transform: scale(0.95);
@@ -301,20 +508,45 @@
         }
         footer {
             flex-shrink: 0;
-            font-family: Arial, sans-serif;
+            font-family: "Press Start 2P", "VT323", monospace;
             text-align: center;
-            padding: 20px;
+            padding: 10px;
             background-color: #111;
             width: 100%;
+            /* Pixelated rendering for footer */
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+            -webkit-font-smoothing: none;
+            -moz-osx-font-smoothing: grayscale;
+            font-smooth: never;
+        }
+        footer p {
+            font-size: clamp(16px, 2.5vw, 24px);
+            margin: 0;
+            text-shadow: 
+                0 0 5px rgba(0, 255, 0, 1),
+                0 0 10px rgba(0, 255, 0, 0.8),
+                0 0 15px rgba(0, 255, 0, 0.6),
+                0 0 20px rgba(0, 255, 0, 0.4);
         }
         footer a {
             color: white;
             margin: 0 10px;
             font-size: 24px;
             text-decoration: none;
+            text-shadow: 
+                0 0 5px rgba(0, 255, 0, 1),
+                0 0 10px rgba(0, 255, 0, 0.8),
+                0 0 15px rgba(0, 255, 0, 0.6);
         }
         footer a:hover {
             color: #00ff00;
+            text-shadow: 
+                0 0 8px rgba(0, 255, 0, 1),
+                0 0 16px rgba(0, 255, 0, 1),
+                0 0 24px rgba(0, 255, 0, 0.8),
+                0 0 32px rgba(0, 255, 0, 0.6);
         }
         #mobileControls {
             display: none;
@@ -327,12 +559,28 @@
             height: 60px;
             background-color: rgba(255, 255, 255, 0.2);
             border: 2px solid #00ff00;
-            border-radius: 50%;
+            border-radius: 15px;
             margin: 0 10px;
             font-size: 24px;
             line-height: 60px;
             color: #00ff00;
             user-select: none;
+            box-shadow: 
+                0 0 15px rgba(0, 255, 0, 0.8),
+                0 0 30px rgba(0, 255, 0, 0.6),
+                0 0 45px rgba(0, 255, 0, 0.4),
+                inset 0 0 10px rgba(0, 255, 0, 0.3);
+            text-shadow: 
+                0 0 5px rgba(0, 255, 0, 1),
+                0 0 10px rgba(0, 255, 0, 0.8),
+                0 0 15px rgba(0, 255, 0, 0.6);
+            /* Pixelated rendering for mobile controls */
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+            -webkit-font-smoothing: none;
+            -moz-osx-font-smoothing: grayscale;
+            font-smooth: never;
         }
         
         @media (max-width: 1200px) {
