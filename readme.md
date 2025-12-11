@@ -1,30 +1,30 @@
-# 🚀 Galactica - Retro Space Invaders
+#  Galactica - Retro Space Invaders
 
 **A modern, retro-styled Space Invaders game built for hackathon competition**
 
 [![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-000000?style=for-the-badge&logo=vercel)](https://your-vercel-url.vercel.app)
 
-## 🎯 Hackathon Project
+##  Hackathon Project
 
 This project was created for a hackathon competition, showcasing modern web development techniques while paying homage to the classic arcade era. The game combines nostalgic gameplay with contemporary web technologies and stunning visual effects.
 
-## ✨ Features
+##  Features
 
-### 🎮 Gameplay
+###  Gameplay
 - **Classic Space Invaders mechanics** with modern enhancements
 - **Progressive difficulty** - enemies get faster each level
 - **Lives system** - 3 lives to survive the alien invasion
 - **Score tracking** with persistent leaderboard
 - **Smooth controls** - keyboard and mobile touch support
 
-### 🎨 Visual Design
-- **Retro CRT monitor effects** with scanlines and phosphor glow
+###  Visual Design
+- **Clean retro aesthetics** optimized for performance
 - **Pixelated fonts** for authentic arcade aesthetics
 - **Glowing text effects** with animated pulsing
 - **Rounded corners** for modern UI polish
 - **Responsive design** - works on desktop and mobile
 
-### 🔧 Technical Features
+###  Technical Features
 - **Pure vanilla JavaScript** - no frameworks required
 - **HTML5 Canvas** for smooth 60fps gameplay
 - **CSS animations** with performance optimizations
@@ -32,11 +32,11 @@ This project was created for a hackathon competition, showcasing modern web deve
 - **Audio system** with retro sound effects
 - **Real-time leaderboard** with API integration
 
-## 🚀 Live Demo
+##  Live Demo
 
 **Play the game now:** [Deployed on Vercel](https://your-vercel-url.vercel.app)
 
-## 🎮 How to Play
+##  How to Play
 
 ### Desktop Controls
 - **Arrow Keys** - Move spaceship left/right
@@ -53,7 +53,7 @@ This project was created for a hackathon competition, showcasing modern web deve
 3. Achieve the highest score possible
 4. Submit your name to the global leaderboard
 
-## 🛠️ Technology Stack
+##  Technology Stack
 
 - **Frontend:** HTML5, CSS3, Vanilla JavaScript
 - **Graphics:** HTML5 Canvas API
@@ -62,7 +62,7 @@ This project was created for a hackathon competition, showcasing modern web deve
 - **API:** Node.js serverless functions
 - **Data Storage:** JSON-based leaderboard system
 
-## 📱 Performance Optimizations
+##  Performance Optimizations
 
 - **Mobile-first design** with adaptive frame rates
 - **Efficient rendering** with optimized game loops
@@ -70,24 +70,24 @@ This project was created for a hackathon competition, showcasing modern web deve
 - **Memory management** for smooth gameplay
 - **Touch event optimization** for responsive controls
 
-## 🎨 Design Highlights
+##  Design Highlights
 
 - **Authentic retro aesthetics** with modern polish
-- **Glowing green phosphor effects** mimicking old CRT monitors
+- **Optimized visual effects** for smooth performance
 - **Pixelated typography** using Press Start 2P font
 - **Smooth animations** with CSS transforms
 - **Consistent visual hierarchy** throughout the interface
 
-## 🏆 Hackathon Goals Achieved
+##  Hackathon Goals Achieved
 
-- ✅ **Fully functional game** with complete gameplay loop
-- ✅ **Modern web technologies** showcasing technical skills
-- ✅ **Responsive design** for cross-device compatibility
-- ✅ **Performance optimization** for smooth user experience
-- ✅ **Visual polish** with attention to design details
-- ✅ **Deployment ready** with Vercel integration
+-  **Fully functional game** with complete gameplay loop
+-  **Modern web technologies** showcasing technical skills
+-  **Responsive design** for cross-device compatibility
+-  **Performance optimization** for smooth user experience
+-  **Visual polish** with attention to design details
+-  **Deployment ready** with Vercel integration
 
-## 🚀 Quick Start
+##  Quick Start
 
 1. **Clone the repository**
    ```bash
@@ -106,7 +106,7 @@ This project was created for a hackathon competition, showcasing modern web deve
    vercel --prod
    ```
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 galactica-space-invaders/
@@ -122,7 +122,7 @@ galactica-space-invaders/
 └── assets/                 # Game sprites
 ```
 
-## 🎯 Future Enhancements
+##  Future Enhancements
 
 - Power-ups and special weapons
 - Multiple enemy types with different behaviors
@@ -131,9 +131,9 @@ galactica-space-invaders/
 - Achievement system
 - Multiplayer functionality
 
-## 👨‍💻 Developer
+##  Developer
 
-**By Knight Legion**
+**By Team Knight Legion**
 
 Created with passion for retro gaming and modern web development.
 

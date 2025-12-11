@@ -71,9 +71,13 @@ ctx.imageSmoothingEnabled = false;
 // Mobile performance optimizations
 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 if (isMobile) {
-    // Reduce audio volume on mobile to save battery
-    sndBG.volume = 0.2;
-    // Disable some visual effects for better performance
+    // Disable audio on mobile for maximum performance
+    sndBG.volume = 0;
+    sndShoot.volume = 0;
+    sndEnemyHit.volume = 0;
+    sndPlayerHit.volume = 0;
+    sndGameOver.volume = 0;
+    // Disable visual effects for better performance
     canvas.style.filter = 'none';
 }
 
@@ -85,7 +89,7 @@ const player = {
     y: canvas.height - 30,
     width: 50,
     height: 30,
-    speed: 5,
+    speed: 12,
     moving: {
         left: false,
         right: false
@@ -100,8 +104,8 @@ const enemyRows = 5;
 const enemyCols = 10;
 
 let enemyDirection = 1;
-let enemySpeed = 0.5;
-let enemyDropDistance = 20;
+let enemySpeed = 1.2;
+let enemyDropDistance = 30;
 let score = 0;
 let level = 1;
 let gameIsOver = false;
@@ -114,7 +118,7 @@ let touchRight = false;
 
 // Bullet firing cooldown
 let lastBulletTime = 0;
-const bulletCooldown = 200; // 200ms cooldown between bullets
+const bulletCooldown = 150; // 150ms cooldown between bullets
 
 function createEnemies() {
     enemies = [];
@@ -136,22 +140,14 @@ function drawScore() {
     ctx.fillStyle = 'white';
     ctx.font = '20px "Press Start 2P", "VT323", monospace';
     
-    // Reduce glow effects on mobile for better performance
-    if (!isMobile) {
-        ctx.shadowColor = '#00ff00';
-        ctx.shadowBlur = 10;
-    }
-    
+    // No shadow effects for maximum performance
     ctx.fillText(`Score: ${score}`, 10, 30);
     ctx.fillText(`Level: ${level}`, canvas.width - 100, 30);
     ctx.fillText(`Lives: ${player.lives}`, 10, canvas.height - 10);
-    
-    // Reset shadow
-    ctx.shadowBlur = 0;
 }
 
 function enemyShoot() {
-    if (enemies.length > 0 && Math.random() < 0.02) {
+    if (enemies.length > 0 && Math.random() < 0.12) {
         const shooter = enemies[Math.floor(Math.random() * enemies.length)];
         enemyBullets.push({
             x: shooter.x + shooter.width / 2,
@@ -174,44 +170,35 @@ function createExplosion(x, y, isEnemy = false) {
 }
 
 function drawExplosions() {
-    explosions.forEach((explosion, index) => {
+    // ULTRA-OPTIMIZED explosions - no gradients, no shadows
+    for (let i = explosions.length - 1; i >= 0; i--) {
+        const explosion = explosions[i];
         const baseColor = explosion.isEnemy ? '0, 255, 0' : '255, 100, 0';
-        const gradient = ctx.createRadialGradient(
-            explosion.x, explosion.y, 0,
-            explosion.x, explosion.y, explosion.radius
-        );
-        gradient.addColorStop(0, `rgba(255, 255, 255, ${explosion.alpha})`);
-        gradient.addColorStop(0.5, `rgba(${baseColor}, ${explosion.alpha})`);
-        gradient.addColorStop(1, `rgba(0, 0, 0, ${explosion.alpha * 0.5})`);
-
+        
+        // Simple circle explosion only
         ctx.beginPath();
         ctx.arc(explosion.x, explosion.y, explosion.radius, 0, Math.PI * 2);
-        ctx.fillStyle = gradient;
+        ctx.fillStyle = `rgba(${baseColor}, ${explosion.alpha})`;
         ctx.fill();
 
-        ctx.shadowBlur = 20;
-        ctx.shadowColor = `rgba(${baseColor}, 0.5)`;
-
-        ctx.beginPath();
-        ctx.arc(explosion.x, explosion.y, explosion.radius * 0.8, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(${baseColor}, ${explosion.alpha * 0.5})`;
-        ctx.fill();
-
-        ctx.shadowBlur = 0;
-
-        explosion.radius += 1.5;
-        explosion.alpha -= 0.02;
+        explosion.radius += 2; // Faster explosion
+        explosion.alpha -= 0.04; // Faster fade
 
         if (explosion.radius >= explosion.maxRadius || explosion.alpha <= 0) {
-            explosions.splice(index, 1);
+            explosions.splice(i, 1);
         }
-    });
+    }
 }
 
 function checkCollisions() {
-    // Player bullets hitting enemies
-    bullets.forEach((bullet, bulletIndex) => {
-        enemies.forEach((enemy, enemyIndex) => {
+    // Player bullets hitting enemies - OPTIMIZED
+    for (let bulletIndex = bullets.length - 1; bulletIndex >= 0; bulletIndex--) {
+        const bullet = bullets[bulletIndex];
+        let bulletHit = false;
+        
+        for (let enemyIndex = enemies.length - 1; enemyIndex >= 0; enemyIndex--) {
+            const enemy = enemies[enemyIndex];
+            
             if (
                 bullet.x < enemy.x + enemy.width &&
                 bullet.x + 5 > enemy.x &&
@@ -220,29 +207,37 @@ function checkCollisions() {
             ) {
                 createExplosion(enemy.x + enemy.width / 2, enemy.y + enemy.height / 2, true);
 
-                sndEnemyHit.currentTime = 0;
-                sndEnemyHit.play(); // 🔊 ENEMY HIT
+                // Reduce audio calls for performance
+                if (frameCount % 2 === 0) {
+                    sndEnemyHit.currentTime = 0;
+                    sndEnemyHit.play();
+                }
 
                 bullets.splice(bulletIndex, 1);
                 enemies.splice(enemyIndex, 1);
                 score += 10;
-
+                bulletHit = true;
+                break; // Exit enemy loop since bullet is destroyed
             }
-        });
-    });
+        }
+        
+        if (bulletHit) continue; // Skip to next bullet
+    }
 
-    // Enemy bullets hitting player
-    enemyBullets.forEach((bullet, index) => {
+    // Enemy bullets hitting player - OPTIMIZED
+    for (let i = enemyBullets.length - 1; i >= 0; i--) {
+        const bullet = enemyBullets[i];
+        
         if (
             bullet.x < player.x + player.width &&
             bullet.x + bullet.width > player.x &&
             bullet.y < player.y + player.height &&
             bullet.y + bullet.height > player.y
         ) {
-            enemyBullets.splice(index, 1);
+            enemyBullets.splice(i, 1);
 
             sndPlayerHit.currentTime = 0;
-            sndPlayerHit.play(); // 🔊 PLAYER HIT
+            sndPlayerHit.play();
 
             player.lives--;
             createExplosion(player.x + player.width / 2, player.y + player.height / 2);
@@ -250,8 +245,9 @@ function checkCollisions() {
             if (player.lives <= 0) {
                 gameOver();
             }
+            break; // Only one bullet can hit player per frame
         }
-    });
+    }
 }
 
 let nameSubmitted = false;
@@ -350,12 +346,7 @@ function drawGameOver() {
     ctx.fillStyle = 'rgba(0, 0, 0, 0.75)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Reduce glow effects on mobile for better performance
-    if (!isMobile) {
-        ctx.shadowColor = '#00ff00';
-        ctx.shadowBlur = 15;
-    }
-    
+    // No shadow effects for maximum performance
     ctx.fillStyle = 'white';
     ctx.font = '48px "Press Start 2P", "VT323", monospace';
     ctx.fillText('Game Over', canvas.width / 2 - 180, canvas.height / 2 - 100);
@@ -365,29 +356,19 @@ function drawGameOver() {
 
     // Only show "Play Again" button after name is submitted
     if (nameSubmitted) {
-        // Reset shadow for button background
-        ctx.shadowBlur = 0;
-        
         // Draw rounded button background
         ctx.fillStyle = 'lime';
         drawRoundedRect(canvas.width / 2 - 100, canvas.height / 2 + 40, 250, 40, 10);
-        
-        // Add glow to button text
-        ctx.shadowColor = '#00ff00';
-        ctx.shadowBlur = 10;
         
         ctx.fillStyle = 'black';
         ctx.font = '20px "Press Start 2P", "VT323", monospace';
         ctx.fillText('Play Again', canvas.width / 2 - 70, canvas.height / 2 + 65);
     }
-    
-    // Reset shadow
-    ctx.shadowBlur = 0;
 }
 
 function nextLevel() {
     level++;
-    enemySpeed += 0.2;
+    enemySpeed += 0.4;
     createEnemies();
     bullets = [];
     enemyBullets = [];
@@ -399,7 +380,7 @@ function resetGame() {
     player.x = canvas.width / 2;
     score = 0;
     level = 1;
-    enemySpeed = 0.5;
+    enemySpeed = 1.2;
     createEnemies();
     bullets = [];
     enemyBullets = [];
@@ -421,8 +402,9 @@ function resetGame() {
 
 // Performance optimization variables
 let lastFrameTime = 0;
-const targetFPS = 60;
+const targetFPS = isMobile ? 20 : 30; // Even lower FPS for smooth performance
 const frameInterval = 1000 / targetFPS;
+let frameCount = 0;
 
 function gameLoop(currentTime = 0) {
     // Throttle frame rate for better mobile performance
@@ -431,8 +413,10 @@ function gameLoop(currentTime = 0) {
         return;
     }
     lastFrameTime = currentTime;
+    frameCount++;
 
-    if (sndBG.paused && !gameIsOver) {
+    // Skip audio check every other frame for performance
+    if (frameCount % 2 === 0 && sndBG.paused && !gameIsOver) {
         sndBG.play();
     }
 
@@ -458,18 +442,22 @@ function gameLoop(currentTime = 0) {
             ctx.fillRect(player.x, player.y, player.width, player.height);
         }
 
-        // Update and draw bullets
+        // Update and draw bullets - OPTIMIZED
         ctx.fillStyle = 'white';
-        bullets.forEach((bullet, index) => {
-            bullet.y -= 7;
+        for (let i = bullets.length - 1; i >= 0; i--) {
+            const bullet = bullets[i];
+            bullet.y -= 12;
             ctx.fillRect(bullet.x, bullet.y, 5, 10);
-            if (bullet.y < 0) bullets.splice(index, 1);
-        });
+            if (bullet.y < 0) {
+                bullets.splice(i, 1);
+            }
+        }
 
-        // Move and draw enemies
+        // Move and draw enemies - OPTIMIZED
         ctx.fillStyle = 'red';
         let shouldChangeDirection = false;
-        enemies.forEach(enemy => {
+        for (let i = 0; i < enemies.length; i++) {
+            const enemy = enemies[i];
             enemy.x += enemySpeed * enemyDirection;
             if (enemy.x <= 0 || enemy.x + enemy.width >= canvas.width) {
                 shouldChangeDirection = true;
@@ -477,25 +465,30 @@ function gameLoop(currentTime = 0) {
             if (enemyImage.complete) {
                 ctx.drawImage(enemyImage, enemy.x, enemy.y, enemy.width, enemy.height);
             } else {
-                ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height); // fallback
+                ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
             }
-        });
+        }
 
         if (shouldChangeDirection) {
             enemyDirection *= -1;
-            enemies.forEach(enemy => enemy.y += enemyDropDistance);
+            for (let i = 0; i < enemies.length; i++) {
+                enemies[i].y += enemyDropDistance;
+            }
         }
 
-        // Enemy shooting
-        enemyShoot();
+        // Enemy shooting - MAXIMUM FREQUENCY
+        enemyShoot(); // Shoot every frame!
 
-        // Update and draw enemy bullets
+        // Update and draw enemy bullets - OPTIMIZED
         ctx.fillStyle = 'yellow';
-        enemyBullets.forEach((bullet, index) => {
-            bullet.y += 5;
+        for (let i = enemyBullets.length - 1; i >= 0; i--) {
+            const bullet = enemyBullets[i];
+            bullet.y += 12;
             ctx.fillRect(bullet.x, bullet.y, bullet.width, bullet.height);
-            if (bullet.y > canvas.height) enemyBullets.splice(index, 1);
-        });
+            if (bullet.y > canvas.height) {
+                enemyBullets.splice(i, 1);
+            }
+        }
 
         checkCollisions();
 
@@ -504,9 +497,14 @@ function gameLoop(currentTime = 0) {
             nextLevel();
         }
 
-        // Check game over condition
-        if (enemies.some(enemy => enemy.y + enemy.height >= player.y)) {
-            gameOver();
+        // Check game over condition - OPTIMIZED
+        if (frameCount % 5 === 0) { // Only check every 5th frame
+            for (let i = 0; i < enemies.length; i++) {
+                if (enemies[i].y + enemies[i].height >= player.y) {
+                    gameOver();
+                    break;
+                }
+            }
         }
 
         drawScore();

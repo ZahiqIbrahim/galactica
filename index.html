@@ -24,79 +24,13 @@
             position: relative;
         }
         
-        /* CRT Monitor Effect - Subtle */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                repeating-linear-gradient(
-                    0deg,
-                    rgba(0, 0, 0, 0.1),
-                    rgba(0, 0, 0, 0.1) 1px,
-                    transparent 1px,
-                    transparent 2px
-                );
-            background-size: 100% 4px;
-            pointer-events: none;
-            z-index: 10000;
-            animation: scanline 0.2s linear infinite;
-        }
-        
-        body::after {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(ellipse at center, transparent 0%, rgba(0, 0, 0, 0.2) 100%),
-                repeating-linear-gradient(
-                    0deg,
-                    rgba(0, 255, 0, 0.03),
-                    transparent 0.5px,
-                    transparent 2px,
-                    rgba(0, 255, 0, 0.03) 2.5px
-                );
-            pointer-events: none;
-            z-index: 10001;
-            animation: flicker 0.2s infinite;
-        }
-        
-        @keyframes scanline {
-            0% {
-                background-position: 0 0;
-            }
-            100% {
-                background-position: 0 4px;
-            }
-        }
-        
-        @keyframes flicker {
-            0%, 100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.98;
-            }
-        }
-        
-        /* CRT Screen Effect */
-        .content {
-            filter: contrast(1.2) brightness(0.9);
-        }
+        /* CRT effects completely removed for optimal performance */
         
         /* Enhanced Phosphor Glow Effects for All Text */
         
-        /* Global text glow - Optimized for mobile */
+        /* Minimal text effects for performance */
         body, h1, h2, h3, p, strong, button, input, a {
-            text-shadow: 
-                0 0 2px rgba(0, 255, 0, 0.8),
-                0 0 4px rgba(0, 255, 0, 0.6);
+            text-shadow: 0 0 2px rgba(0, 255, 0, 0.6);
             /* Pixelated rendering for all text */
             image-rendering: pixelated;
             image-rendering: -moz-crisp-edges;
@@ -106,41 +40,13 @@
             font-smooth: never;
         }
         
-        /* Disable heavy effects on mobile */
-        @media (max-width: 800px) {
-            body, h1, h2, h3, p, strong, button, input, a {
-                text-shadow: 0 0 2px rgba(0, 255, 0, 0.8);
-            }
-        }
-        
         .game-title {
             text-shadow: 
-                0 0 5px rgba(0, 255, 0, 1),
-                0 0 10px rgba(0, 255, 0, 0.8),
-                0 0 15px rgba(0, 255, 0, 0.6),
-                0 0 20px rgba(0, 255, 0, 0.4),
+                0 0 3px rgba(0, 255, 0, 0.8),
                 3px 3px 0px #003300;
-            animation: titleGlow 2s ease-in-out infinite alternate;
         }
         
-        @keyframes titleGlow {
-            from {
-                text-shadow: 
-                    0 0 5px rgba(0, 255, 0, 1),
-                    0 0 10px rgba(0, 255, 0, 0.8),
-                    0 0 15px rgba(0, 255, 0, 0.6),
-                    0 0 20px rgba(0, 255, 0, 0.4),
-                    3px 3px 0px #003300;
-            }
-            to {
-                text-shadow: 
-                    0 0 8px rgba(0, 255, 0, 1),
-                    0 0 16px rgba(0, 255, 0, 1),
-                    0 0 24px rgba(0, 255, 0, 0.8),
-                    0 0 32px rgba(0, 255, 0, 0.6),
-                    3px 3px 0px #003300;
-            }
-        }
+        /* Removed title glow animation for performance */
         
         /* Disable animations on mobile for better performance */
         @media (max-width: 800px) {
@@ -169,7 +75,6 @@
             }
         }
         
-        /* Leaderboard CRT Effect - Merged with bulging effect above */
         #leaderboard {
             position: relative;
         }
@@ -207,11 +112,7 @@
         #leaderboard h2,
         #leaderboard p,
         #leaderboard strong {
-            text-shadow: 
-                0 0 5px rgba(0, 255, 0, 1),
-                0 0 10px rgba(0, 255, 0, 0.8),
-                0 0 15px rgba(0, 255, 0, 0.6),
-                0 0 20px rgba(0, 255, 0, 0.4);
+            text-shadow: 0 0 2px rgba(0, 255, 0, 0.8);
             position: relative;
             z-index: 2;
         }
@@ -226,51 +127,18 @@
             animation: leaderboardTitleGlow 3s ease-in-out infinite alternate;
         }
         
-        /* Reduced glow for leaderboard names */
+        /* Minimal glow for leaderboard names */
         #leaderboard strong {
             font-size: clamp(12px, 1.5vw, 16px);
-            text-shadow: 
-                0 0 3px rgba(0, 255, 0, 0.8),
-                0 0 6px rgba(0, 255, 0, 0.6);
-            animation: nameGlow 4s ease-in-out infinite alternate;
+            text-shadow: 0 0 2px rgba(0, 255, 0, 0.8);
         }
         
-        @keyframes leaderboardTitleGlow {
-            from {
-                text-shadow: 
-                    0 0 8px rgba(0, 255, 0, 1),
-                    0 0 16px rgba(0, 255, 0, 1),
-                    0 0 24px rgba(0, 255, 0, 0.8),
-                    0 0 32px rgba(0, 255, 0, 0.6),
-                    0 0 40px rgba(0, 255, 0, 0.4);
-            }
-            to {
-                text-shadow: 
-                    0 0 12px rgba(0, 255, 0, 1),
-                    0 0 24px rgba(0, 255, 0, 1),
-                    0 0 36px rgba(0, 255, 0, 0.9),
-                    0 0 48px rgba(0, 255, 0, 0.7),
-                    0 0 60px rgba(0, 255, 0, 0.5);
-            }
-        }
-        
-        @keyframes nameGlow {
-            from {
-                text-shadow: 
-                    0 0 3px rgba(0, 255, 0, 0.8),
-                    0 0 6px rgba(0, 255, 0, 0.6);
-            }
-            to {
-                text-shadow: 
-                    0 0 4px rgba(0, 255, 0, 1),
-                    0 0 8px rgba(0, 255, 0, 0.8);
-            }
-        }
+        /* All glow animations removed for performance */
         .content {
             flex: 1;
             display: flex;
             flex-direction: row;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
             padding: 10px;
             gap: 20px;
@@ -294,15 +162,12 @@
             line-height: 1.6;
             height: min(52.5vw, 600px);
             max-height: calc(100vh - 200px);
+            margin-top: clamp(48px, 5vw + 6px, 68px);
             overflow-y: auto;
             overflow-x: hidden;
             box-shadow: 
-                0 0 15px rgba(0, 255, 0, 1),
-                0 0 30px rgba(0, 255, 0, 0.8),
-                0 0 45px rgba(0, 255, 0, 0.6),
-                0 0 60px rgba(0, 255, 0, 0.4),
-                inset 0 0 15px rgba(0, 255, 0, 0.2);
-            animation: leaderboardGlow 4s ease-in-out infinite alternate;
+                0 0 8px rgba(0, 255, 0, 0.7),
+                0 0 16px rgba(0, 255, 0, 0.4);
             /* Pixelated rendering for leaderboard */
             image-rendering: pixelated;
             image-rendering: -moz-crisp-edges;
@@ -312,24 +177,7 @@
             font-smooth: never;
         }
         
-        @keyframes leaderboardGlow {
-            from {
-                box-shadow: 
-                    0 0 15px rgba(0, 255, 0, 1),
-                    0 0 30px rgba(0, 255, 0, 0.8),
-                    0 0 45px rgba(0, 255, 0, 0.6),
-                    0 0 60px rgba(0, 255, 0, 0.4),
-                    inset 0 0 15px rgba(0, 255, 0, 0.2);
-            }
-            to {
-                box-shadow: 
-                    0 0 25px rgba(0, 255, 0, 1),
-                    0 0 50px rgba(0, 255, 0, 1),
-                    0 0 75px rgba(0, 255, 0, 0.8),
-                    0 0 100px rgba(0, 255, 0, 0.6),
-                    inset 0 0 25px rgba(0, 255, 0, 0.3);
-            }
-        }
+        /* Leaderboard glow animation removed for performance */
         #leaderboard h2 {
             color: #00ff00;
             font-size: 16px;
@@ -396,32 +244,11 @@
             border: 2px solid #00ff00;
             border-radius: 10px;
             box-shadow: 
-                0 0 15px rgba(0, 255, 0, 1),
-                0 0 30px rgba(0, 255, 0, 0.8),
-                0 0 45px rgba(0, 255, 0, 0.6),
-                0 0 60px rgba(0, 255, 0, 0.4),
-                inset 0 0 15px rgba(0, 255, 0, 0.3);
-            animation: canvasGlow 3s ease-in-out infinite alternate;
+                0 0 8px rgba(0, 255, 0, 0.7),
+                0 0 16px rgba(0, 255, 0, 0.4);
         }
         
-        @keyframes canvasGlow {
-            from {
-                box-shadow: 
-                    0 0 15px rgba(0, 255, 0, 1),
-                    0 0 30px rgba(0, 255, 0, 0.8),
-                    0 0 45px rgba(0, 255, 0, 0.6),
-                    0 0 60px rgba(0, 255, 0, 0.4),
-                    inset 0 0 15px rgba(0, 255, 0, 0.3);
-            }
-            to {
-                box-shadow: 
-                    0 0 25px rgba(0, 255, 0, 1),
-                    0 0 50px rgba(0, 255, 0, 1),
-                    0 0 75px rgba(0, 255, 0, 0.8),
-                    0 0 100px rgba(0, 255, 0, 0.6),
-                    inset 0 0 25px rgba(0, 255, 0, 0.4);
-            }
-        }
+        /* Canvas glow animation removed for performance */
         #nameForm {
             display: none;
             position: absolute;
@@ -434,11 +261,7 @@
             padding: 30px;
             border: 3px solid #00ff00;
             border-radius: 10px;
-            box-shadow: 
-                0 0 20px rgba(0, 255, 0, 1),
-                0 0 40px rgba(0, 255, 0, 0.8),
-                0 0 60px rgba(0, 255, 0, 0.6),
-                0 0 80px rgba(0, 255, 0, 0.4);
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.6);
         }
         #nameForm.show {
             display: block;
@@ -472,10 +295,7 @@
             border-radius: 10px;
             outline: none;
             text-align: center;
-            box-shadow: 
-                0 0 10px rgba(0, 255, 0, 0.8),
-                0 0 20px rgba(0, 255, 0, 0.6),
-                inset 0 0 10px rgba(0, 255, 0, 0.3);
+            box-shadow: 0 0 5px rgba(0, 255, 0, 0.6);
             /* Pixelated rendering for input */
             image-rendering: pixelated;
             image-rendering: -moz-crisp-edges;
@@ -486,11 +306,7 @@
         }
         #nameForm input:focus {
             border-color: #00ff00;
-            box-shadow: 
-                0 0 20px rgba(0, 255, 0, 1),
-                0 0 40px rgba(0, 255, 0, 0.8),
-                0 0 60px rgba(0, 255, 0, 0.6),
-                inset 0 0 20px rgba(0, 255, 0, 0.4);
+            box-shadow: 0 0 8px rgba(0, 255, 0, 0.8);
         }
         #nameForm button {
             font-family: "Press Start 2P", "VT323", monospace;
@@ -503,10 +319,7 @@
             border-radius: 10px;
             cursor: pointer;
             transition: all 0.2s;
-            box-shadow: 
-                0 0 15px rgba(0, 255, 0, 0.8),
-                0 0 30px rgba(0, 255, 0, 0.6),
-                0 0 45px rgba(0, 255, 0, 0.4);
+            box-shadow: 0 0 8px rgba(0, 255, 0, 0.6);
             text-shadow: none; /* Override global text shadow for button */
             /* Pixelated rendering for button */
             image-rendering: pixelated;
@@ -518,11 +331,7 @@
         }
         #nameForm button:hover {
             background: #00cc00;
-            box-shadow: 
-                0 0 25px rgba(0, 255, 0, 1),
-                0 0 50px rgba(0, 255, 0, 0.8),
-                0 0 75px rgba(0, 255, 0, 0.6),
-                0 0 100px rgba(0, 255, 0, 0.4);
+            box-shadow: 0 0 12px rgba(0, 255, 0, 0.8);
         }
         #nameForm button:active {
             transform: scale(0.95);
@@ -590,11 +399,7 @@
             line-height: 60px;
             color: #00ff00;
             user-select: none;
-            box-shadow: 
-                0 0 15px rgba(0, 255, 0, 0.8),
-                0 0 30px rgba(0, 255, 0, 0.6),
-                0 0 45px rgba(0, 255, 0, 0.4),
-                inset 0 0 10px rgba(0, 255, 0, 0.3);
+            box-shadow: 0 0 8px rgba(0, 255, 0, 0.6);
             text-shadow: 
                 0 0 5px rgba(0, 255, 0, 1),
                 0 0 10px rgba(0, 255, 0, 0.8),
@@ -712,7 +517,7 @@
     </div>
     
     <footer>
-        <p>By Knight Legion</p>
+        <p>By Team Knight Legion</p>
       
     </footer>
 
