@@ -340,6 +340,35 @@
             position: relative;
             display: inline-block;
         }
+        
+        .controls-info {
+            margin-top: 15px;
+            text-align: center;
+            font-family: "Press Start 2P", "VT323", monospace;
+            font-size: clamp(10px, 1.2vw, 14px);
+            color: white;
+            text-shadow: 0 0 2px rgba(0, 255, 0, 0.6);
+            /* Pixelated rendering */
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+            -webkit-font-smoothing: none;
+            -moz-osx-font-smoothing: grayscale;
+            font-smooth: never;
+        }
+        
+        .controls-info p {
+            margin: 0;
+            line-height: 1.4;
+        }
+        
+        .key {
+            color: #00ff00;
+            text-shadow: 
+                0 0 3px rgba(0, 255, 0, 0.8),
+                0 0 6px rgba(0, 255, 0, 0.6);
+            font-weight: bold;
+        }
         footer {
             flex-shrink: 0;
             font-family: "Press Start 2P", "VT323", monospace;
@@ -532,6 +561,9 @@
                     <br>
                     <button id="submitNameBtn">Submit Score</button>
                 </div>
+            </div>
+            <div class="controls-info">
+                <p>Press <span class="key">SPACEBAR</span> to shoot • Use <span class="key">ARROW KEYS</span> to move left/right</p>
             </div>
             <div id="mobileControls">
                 <div id="leftBtn" class="control-btn">&lt;</div>
