@@ -78,8 +78,47 @@ export default async function handler(req, res) {
             originalFormat = 'object'; // Default format
         }
 
-        // Add new score
-        scores.push({ name, score, date: Date.now() });
+        // Check if player name already exists and handle best score logic
+        const existingPlayerIndex = scores.findIndex(entry => entry.name.toLowerCase() === name.toLowerCase());
+        
+        if (existingPlayerIndex !== -1) {
+            // Player exists, compare scores
+            const existingScore = scores[existingPlayerIndex].score;
+            
+            if (score > existingScore) {
+                // New score is better, replace the existing entry
+                scores[existingPlayerIndex] = { name, score, date: Date.now() };
+                console.log(`Updated ${name}'s score from ${existingScore} to ${score}`);
+            } else {
+                // Existing score is better or equal, don't add the new score
+                console.log(`${name}'s existing score ${existingScore} is better than or equal to new score ${score}, keeping existing`);
+            }
+        } else {
+            // New player, add the score
+            scores.push({ name, score, date: Date.now() });
+            console.log(`Added new player ${name} with score ${score}`);
+        }
+
+        // Remove any duplicate entries for the same player (case-insensitive)
+        // This handles edge cases where there might be multiple entries
+        const uniqueScores = [];
+        const seenPlayers = new Set();
+        
+        for (const entry of scores) {
+            const playerKey = entry.name.toLowerCase();
+            if (!seenPlayers.has(playerKey)) {
+                seenPlayers.add(playerKey);
+                uniqueScores.push(entry);
+            } else {
+                // If we find a duplicate, keep the one with higher score
+                const existingIndex = uniqueScores.findIndex(e => e.name.toLowerCase() === playerKey);
+                if (existingIndex !== -1 && entry.score > uniqueScores[existingIndex].score) {
+                    uniqueScores[existingIndex] = entry;
+                }
+            }
+        }
+        
+        scores = uniqueScores;
 
         // Sort highest score first and keep only top 100
         scores.sort((a, b) => b.score - a.score);

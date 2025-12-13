@@ -15,6 +15,15 @@
             padding: 0;
             overflow: hidden;
         }
+        
+        /* Allow scrolling on mobile devices */
+        @media (max-width: 800px) {
+            html, body {
+                overflow: auto;
+                height: auto;
+                min-height: 100vh;
+            }
+        }
         body {
             display: flex;
             flex-direction: column;
